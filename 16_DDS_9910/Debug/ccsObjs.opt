@@ -1,0 +1,13 @@
+"./empty.o"
+"./ti_msp_dl_config.o"
+"./startup_mspm0g350x_ticlang.o"
+"./Hardware/AD9910.o"
+"./Hardware/adc.o"
+"./Hardware/interrupt.o"
+"./Hardware/key.o"
+"./Hardware/led.o"
+"./Hardware/oled.o"
+"./Hardware/uart.o"
+-l"./device_linker.cmd"
+-ldevice.cmd.genlibs
+-llibc.a
