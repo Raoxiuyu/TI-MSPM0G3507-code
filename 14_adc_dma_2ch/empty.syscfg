@@ -1,0 +1,136 @@
+/**
+ * These arguments were used when this file was generated. They will be automatically applied on subsequent loads
+ * via the GUI or CLI. Run CLI with '--help' for additional information on how to override these arguments.
+ * @cliArgs --device "MSPM0G350X" --package "LQFP-64(PM)" --part "Default" --product "mspm0_sdk@2.01.00.03"
+ * @versions {"tool":"1.20.0+3587"}
+ */
+
+/**
+ * Import the modules used in this configuration.
+ */
+const ADC12         = scripting.addModule("/ti/driverlib/ADC12", {}, false);
+const ADC121        = ADC12.addInstance();
+const GPIO          = scripting.addModule("/ti/driverlib/GPIO", {}, false);
+const GPIO1         = GPIO.addInstance();
+const GPIO2         = GPIO.addInstance();
+const I2C           = scripting.addModule("/ti/driverlib/I2C", {}, false);
+const I2C1          = I2C.addInstance();
+const PWM           = scripting.addModule("/ti/driverlib/PWM", {}, false);
+const PWM1          = PWM.addInstance();
+const SYSCTL        = scripting.addModule("/ti/driverlib/SYSCTL");
+const TIMER         = scripting.addModule("/ti/driverlib/TIMER", {}, false);
+const TIMER1        = TIMER.addInstance();
+const UART          = scripting.addModule("/ti/driverlib/UART", {}, false);
+const UART1         = UART.addInstance();
+const ProjectConfig = scripting.addModule("/ti/project_config/ProjectConfig");
+
+/**
+ * Write custom configuration values to the imported modules.
+ */
+const multiplier2         = system.clockTree["PLL_QDIV"];
+multiplier2.multiplyValue = 6;
+
+const pinFunction3     = system.clockTree["HFCLKEXT"];
+pinFunction3.inputFreq = 40;
+
+const pinFunction4     = system.clockTree["HFXT"];
+pinFunction4.inputFreq = 24;
+
+ADC121.$name                             = "ADC12_0";
+ADC121.repeatMode                        = true;
+ADC121.configureDMA                      = true;
+ADC121.enabledInterrupts                 = ["DL_ADC12_INTERRUPT_DMA_DONE"];
+ADC121.enableFIFO                        = true;
+ADC121.sampleTime0                       = "62.5ns";
+ADC121.powerDownMode                     = "DL_ADC12_POWER_DOWN_MODE_MANUAL";
+ADC121.sampCnt                           = 6;
+ADC121.samplingOperationMode             = "sequence";
+ADC121.endAdd                            = 1;
+ADC121.adcMem1chansel                    = "DL_ADC12_INPUT_CHAN_1";
+ADC121.enabledDMATriggers                = ["DL_ADC12_DMA_MEM10_RESULT_LOADED"];
+ADC121.peripheral.adcPin0.$assign        = "PA27";
+ADC121.adcPin0Config.$name               = "ti_driverlib_gpio_GPIOPinGeneric3";
+ADC121.DMA_CHANNEL.$name                 = "DMA_CH0";
+ADC121.DMA_CHANNEL.addressMode           = "f2b";
+ADC121.DMA_CHANNEL.configureTransferSize = true;
+ADC121.DMA_CHANNEL.transferSize          = 1024;
+ADC121.adcPin1Config.$name               = "ti_driverlib_gpio_GPIOPinGeneric6";
+
+const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
+
+GPIO1.$name                               = "GPIO_led";
+GPIO1.associatedPins.create(2);
+GPIO1.associatedPins[0].$name             = "PIN_0";
+GPIO1.associatedPins[0].launchPadShortcut = "LED1En";
+GPIO1.associatedPins[0].initialValue      = "SET";
+GPIO1.associatedPins[1].$name             = "PIN_22";
+GPIO1.associatedPins[1].launchPadShortcut = "LED2BlueEn";
+
+GPIO2.$name                               = "GPIO_key";
+GPIO2.associatedPins.create(2);
+GPIO2.associatedPins[0].launchPadShortcut = "Button2En";
+GPIO2.associatedPins[0].$name             = "PIN_18";
+GPIO2.associatedPins[0].internalResistor  = "PULL_DOWN";
+GPIO2.associatedPins[1].launchPadShortcut = "Button3En";
+GPIO2.associatedPins[1].$name             = "PIN_21";
+
+I2C1.$name                           = "I2C_0";
+I2C1.basicEnableController           = true;
+I2C1.basicControllerStandardBusSpeed = "Fast";
+I2C1.peripheral.$assign              = "I2C0";
+I2C1.peripheral.sdaPin.$assign       = "PA28";
+I2C1.peripheral.sclPin.$assign       = "PA31";
+I2C1.sdaPinConfig.$name              = "ti_driverlib_gpio_GPIOPinGeneric0";
+I2C1.sclPinConfig.$name              = "ti_driverlib_gpio_GPIOPinGeneric1";
+
+PWM1.$name                      = "PWM_0";
+PWM1.ccIndex                    = [0];
+PWM1.clockDivider               = 8;
+PWM1.timerCount                 = 10000;
+PWM1.peripheral.$assign         = "TIMG6";
+PWM1.peripheral.ccp0Pin.$assign = "PB2";
+PWM1.PWM_CHANNEL_0.$name        = "ti_driverlib_pwm_PWMTimerCC0";
+PWM1.PWM_CHANNEL_0.dutyCycle    = 50;
+PWM1.ccp0PinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric2";
+
+SYSCTL.forceDefaultClkConfig = true;
+SYSCTL.clockTreeEn           = true;
+SYSCTL.useHFCLK_Manual       = true;
+SYSCTL.HFCLKSource           = "HFXT";
+SYSCTL.HFCLK_Freq            = 24000000;
+
+TIMER1.$name              = "TIMER_0";
+TIMER1.timerClkDiv        = 5;
+TIMER1.timerClkPrescale   = 256;
+TIMER1.interrupts         = ["ZERO"];
+TIMER1.interruptPriority  = "3";
+TIMER1.timerMode          = "PERIODIC";
+TIMER1.timerPeriod        = "1 s";
+TIMER1.peripheral.$assign = "TIMG0";
+
+UART1.$name                    = "UART_0";
+UART1.uartClkDiv               = "2";
+UART1.enabledInterrupts        = ["RX"];
+UART1.peripheral.rxPin.$assign = "PA11";
+UART1.txPinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric4";
+UART1.rxPinConfig.$name        = "ti_driverlib_gpio_GPIOPinGeneric5";
+
+ProjectConfig.genLibCMSIS = true;
+
+/**
+ * Pinmux solution for unlocked pins/peripherals. This ensures that minor changes to the automatic solver in a future
+ * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
+ * re-solve from scratch.
+ */
+ADC121.peripheral.$suggestSolution             = "ADC0";
+ADC121.peripheral.adcPin1.$suggestSolution     = "PA26";
+ADC121.DMA_CHANNEL.peripheral.$suggestSolution = "DMA_CH0";
+Board.peripheral.$suggestSolution              = "DEBUGSS";
+Board.peripheral.swclkPin.$suggestSolution     = "PA20";
+Board.peripheral.swdioPin.$suggestSolution     = "PA19";
+GPIO1.associatedPins[0].pin.$suggestSolution   = "PA0";
+GPIO1.associatedPins[1].pin.$suggestSolution   = "PB22";
+GPIO2.associatedPins[0].pin.$suggestSolution   = "PA18";
+GPIO2.associatedPins[1].pin.$suggestSolution   = "PB21";
+UART1.peripheral.$suggestSolution              = "UART0";
+UART1.peripheral.txPin.$suggestSolution        = "PA10";
